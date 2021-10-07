@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/tableLayout}">
+<head>
+<head>
+<title>Бестиарий</title>
+<link rel="stylesheet" th:href="@{/resources/css/statblock.css}" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="collapse m-2" id="subRaces">
+			<th:block th:each="creatureRace : ${creatureRaces}">
+				<a class="text-reset text-decoration-none" th:href="@{|/creatures/tag/${creatureRace.id}|}"> <span class="badge bg-secondary" th:text="${creatureRace.name}"></span>
+				</a>
+			</th:block>
+		</div>
+		<table id="creatures" class="table table-hover table-sm nowrap color-main-bg-500">
+			<thead>
+				<tr>
+					<th title="Уровень угрозы (Опасность)">CR</th>
+					<th>Название</th>
+					<th class="text-center">Тип</th>
+					<th class="text-center">Размер</th>
+					<th class="text-center">Мировоззрение</th>
+					<th class="text-center">Среда обитания</th>
+					<th>English</th>
+					<th>Альтернативное имя</th>
+					<th>Легендарность</th>
+					<th>Источник</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<script layout:fragment="datatable">
+		$(document).ready(function() {
+			$('a.toggle-vis').on('click',function(e) {
+				e.preventDefault();
+				var column = table.column($(this).attr('data-column'));
+										column.visible(!column.visible());
+									});
+							var table = $('#creatures')
+									.DataTable(
+											{
+												stateSave : true,
+												serverSide : true,
+												dom : '<"top"<"left-col"f><"right-col"B>>rti',
+												ajax : '/data/creatures',
+												scrollY : "65vh",
+												scrollX : "65vh",
+												scrollCollapse : true,
+												scroller : true,
+												paging : false,
+												select : {
+													style : 'single'
+												},
+												autoWidth : false,
+												columns : [
+														{
+															data : "exp",
+															width : "3%",
+															searchable : false,
+															className : "text-center",
+														},
+														{
+															data : "name",
+															width : "20%",
+															render : function(
+																	data, type,
+																	row) {
+																if (type === 'display') {
+																	return '<h6>'
+																			+ data
+																			+ (row.englishName ? '<small class="text-secondary"> ['
+																					+ row.englishName
+																					+ ']</small>'
+																					: '')
+																			+ '</h6>'
+																			+ '<div class="text-secondary"><small>'
+																			+ row.book
+																			+ '</small></div>';
+																}
+																return data;
+															},
+														},
+														{
+															data : "type",
+															width : "10%",
+															searchable : false,
+															className : "text-center",
+														},
+														{
+															data : "size",
+															width : "15%",
+															searchable : false,
+															className : "text-center",
+															searchable : false,
+														},
+														{
+															data : "alignment",
+															width : "15%",
+															searchable : false,
+															className : "text-center",
+															searchable : false,
+														},
+														{
+															data : "habitates",
+															width : "10%",
+															searchable : false,
+															className : "text-center",
+														},
+														{
+															data : "englishName",
+															width : "10%",
+														}, {
+															data : "altName",
+															width : "1%",
+														}, {
+															data : "legendary",
+															width : "1%",
+														}, {
+															data : "book",
+															width : "10%",
+															searchable : false,
+														}, ],
+												columnDefs : [ {
+													searchPanes : {
+														searchable : false,
+													},
+													targets : [ 0 ]
+												}, {
+													targets : [ 2 ],
+													visible : false
+												}, {
+													targets : [ 3 ],
+													visible : false
+												}, {
+													targets : [ 4 ],
+													visible : false
+												}, {
+													targets : [ 5 ],
+													visible : false
+												}, {
+													targets : [ 6 ],
+													visible : false
+												}, {
+													searchPanes : {
+														controls : false
+													},
+													targets : [ 7 ],
+													visible : false
+												}, {
+													targets : [ 8 ],
+													visible : false
+												},{
+													targets : [ 9 ],
+													visible : false
+												}, ],
+												buttons : [
+														{
+															autoClose : 'true',
+															tag : 'a',
+															attr : {
+																'data-bs-toggle' : 'collapse',
+																href : '#subRaces',
+																role : 'button',
+																'aria-expanded' : 'false',
+																'aria-controls' : 'subRaces',
+															},
+															text : 'Метки',
+															className : 'btn-main btn-sm btn-color-main',
+															action : function(
+																	e, dt,
+																	node,
+																	config) {
+															},
+														},
+														{
+															extend : 'searchPanes',
+															className : 'btn-main btn-color-main',
+														},
+														{
+															extend : 'colvis',
+															text : 'Столбцы',
+															className : 'btn-main btn-color-main',
+															buttons : [
+																	{
+																		text : 'Тип',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							2)
+																					.visible(
+																							!dt
+																									.column(
+																											2)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Размер',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							3)
+																					.visible(
+																							!dt
+																									.column(
+																											3)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Мировоззрение',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							4)
+																					.visible(
+																							!dt
+																									.column(
+																											4)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Среда обитания',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							5)
+																					.visible(
+																							!dt
+																									.column(
+																											5)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Альтернативное имя',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							7)
+																					.visible(
+																							!dt
+																									.column(
+																											7)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Источник',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							9)
+																					.visible(
+																							!dt
+																									.column(
+																											9)
+																									.visible());
+																		}
+																	}, ],
+														} ],
+												language : {
+													processing : "Загрузка...",
+													searchPlaceholder : "Поиск ",
+													search : "_INPUT_",
+													lengthMenu : "Показывать _MENU_ записей на странице",
+													zeroRecords : "Ничего не найдено",
+													info : "Показано с _START_ до _END_ из _TOTAL_",
+													infoEmpty : "Нет доступных записей",
+													infoFiltered : "из _MAX_)",
+													paginate : {
+														first : "В начало",
+														previous : "Предыдущая",
+														next : "Следущая",
+														last : "В конец"
+													},
+													searchPanes : {
+														clearMessage : "Сбросить",
+														title : {
+															_ : 'Отфильтровано - %d',
+															0 : 'Фильтры не активны (Ctrl или Shift для множественного выбора)',
+															1 : 'Один фильтр выбран',
+														},
+														collapse : 'Фильтры (%d)'
+													},
+												},
+												ordering : true,
+											});
+			table.on('draw.dt', function() {
+				if (table.data().count() === 1) {
+					table.row(0).select();
+					var tr = $(this).closest('tr');
+					var row = table.row(tr);
+					var element = document.getElementById("info");
+					var url = '/creatures/statblock/' + table.row(0).data().id;
+					element.innerHTML = $("#info").load(url);
+				}
+			});
+			$('#creatures tbody').on('click', 'tr', function() {
+				var tr = $(this).closest('tr');
+				var row = table.row(tr);
+				var element = document.getElementById("info");
+				var url = '/creatures/statblock/' + row.data().id;
+				$("#info").load(url);
+			});
+		});
+	</script>
+</body>
+</html>

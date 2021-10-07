@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+<title>Создание персонажа</title>
+</head>
+<body>
+	<div class="container pb-5 pt-5" style="margin-top: 25px" layout:fragment="content">
+		<div th:insert="fragments/builder :: menu('start', '', '')"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Создание персонажа (Завершение)</h4>
+				<hr />
+			</div>
+		</div>
+	</div>
+</body>
+</html>

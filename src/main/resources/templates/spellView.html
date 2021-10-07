@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+<title th:text="${spell.name}"></title>
+<style>
+img {
+	float: center;
+}
+</style>
+</head>
+<body>
+	<div class="container pt-5" layout:fragment="content" th:with="window=${true}">
+		<div class="pt-4"></div>
+		<div th:object="${spell}" th:fragment="spell">
+			<div class="row justify-content-between">
+				<div th:if="${window}" class="col">
+					<span class="main-header" th:text="*{name}"></span> <small class="text-secondary" th:text="|[*{englishName}]|"></small>
+				</div>
+				<div th:unless="${window}" class="col main-header">
+					<a class="text-reset" target="_blank" th:href="@{|/hero/spells/${#strings.replace(spell.englishName, ' ', '_')}|}"><span th:text="*{name}"></span></a> <small class="text-secondary"
+						th:text="|[*{englishName}]|"
+					></small>
+				</div>
+			</div>
+			<hr class="line1" />
+			<div class="content-dnd">
+				<div class="pb-1">
+					<em> <th:block th:text="(${spell.level}!=0) ? ${spell.level} + ' уровень' : 'Заговор'" /> , <th:block th:text="*{school.name}" /> <th:block
+							th:text="${spell.ritual != null && spell.ritual} ? ' (ритуал)' : '' "
+						/></em>
+				</div>
+				<div class="card main-description">
+					<div class="row justify-content-between">
+						<div class="col main-description-text">
+							<div>
+								<strong>Время накладывания:</strong>
+								<th:block th:each="time, iterStat : *{times}">
+									<span th:text="|${iterStat.last ? time.name : time.name + ' или '}|"></span>
+								</th:block>
+							</div>
+							<div>
+								<strong>Дистанция:</strong>
+								<span th:text="*{distance}"></span>
+							</div>
+							<div>
+								<strong>Компоненты:</strong> <img class="invert" data-toggle="popover" data-placement="auto" th:if="${spell.verbalComponent}"
+									title="Вербальный - Большинство заклинаний требуют произношения таинственных слов. Сами по себе слова не являются источником силы заклинания; просто комбинация звуков с особой тональностью вызывает резонанс в прядях магии, приводя их в движение. Таким образом, персонаж с кляпом во рту или в области заклинания тишина, не может активировать заклинания с вербальным компонентом."
+									th:src="@{/resources/icons/speaker.svg}" height="25"
+								/> <img class="invert" data-toggle="popover" data-placement="auto" th:if="${spell.somaticComponent}"
+									title="Cоматический - Заклинание может требовать энергичной жестикуляции или замысловатой последовательности телодвижений. Если у заклинания есть соматический компонент, у заклинателя должна быть свободной хотя бы одна рука для исполнения этих жестов."
+									th:src="@{/resources/icons/magic-swirl.svg}" height="25"
+								/> <img class="invert" data-toggle="popover" data-placement="auto" th:if="${spell.materialComponent}"
+									title="Mатериальный - У заклинателя должна быть одна свободная рука для доступа к материальным компонентам, но это может быть та же самая рука, что используется для выполнения соматического компонента. Персонаж может использовать мешочек с компонентами или заклинательную фокусировку вместо указанных компонентов. Однако, если для компонента указана цена, у персонажа для накладывания заклинания должен быть именно такой компонент."
+									th:src="@{/resources/icons/swap-bag.svg}" height="25"
+								/>
+								<th:block th:if="${spell.additionalMaterialComponent}"> (<th:block th:text="${spell.additionalMaterialComponent}" />)</th:block>
+							</div>
+							<div>
+								<strong>Длительность:</strong>
+								<span th:text="*{duration}"></span>
+							</div>
+						</div>
+						<div class="col-auto">
+							<div th:if="${spell.book}">
+								<div class="text-color-opacity text-right" th:title = "*{book.englishName}" th:text="|Источник: ${spell.book.name}${spell.page eq null?'':', стр.' + spell.page} [*{book.source}]|"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr class="mb-2 mt-2" align="center" size="5" color="#822000" />
+				<th:block th:utext="*{description}" />
+				<div th:if="${spell.upperLevel}">
+					<hr class="mb-2 mt-1" align="center" size="5" color="#822000" />
+					<strong>На более высоких уровнях: </strong>
+					<div th:utext="*{upperLevel}"></div>
+				</div>
+				<hr class="mb-2 mt-1" align="center" size="5" color="#822000" />
+				<div th:unless="*{heroClass.empty}">
+					<div>
+						Классы: <a class="btn btn-square-outline btn-color-main-outline" th:each="hero : *{heroClass}" th:href="@{|/classes/${hero.englishName}|}"> <img data-toggle="tooltip" data-placement="top"
+							th:src="@{|/resources/classes/${hero.id}.png|}" th:title="${hero.name}" height="24" width="24"
+						/></a>
+					</div>
+				</div>
+				<div class="pt-2" th:unless="${arhitypes.empty}">
+					Подклассы: <a class="btn btn-outline-secondary btn-sm" th:each="archetype: ${arhitypes}" th:href="@{|/classes/${archetype.classEnglishName}/${archetype.architypeEnglishName}|}"><img
+						data-toggle="tooltip" data-placement="top" th:src="@{|/resources/classes/${archetype.classId}.png|}" th:title="|${archetype.className} ${archetype.architypeName}|" height="25" width="25"
+					/> <span th:text="${archetype.architypeName}"></span> </a>
+				</div>
+			</div>
+			<script>
+				$(function() {
+					$('body').popover({
+						selector : '[data-toggle="popover"]',
+						trigger : 'hover',
+						container : 'body',
+						html : true,
+						delay : {
+							"show" : 250,
+							"hide" : 200
+						},
+					}).on('hide.bs.popover', function() {
+						if ($(".popover:hover").length) {
+							return false;
+						}
+					});
+					$('body').on('mouseleave', '.popover', function() {
+						$('.popover').popover('hide');
+					});
+				})
+			</script>
+		</div>
+	</div>
+</body>
+</html>

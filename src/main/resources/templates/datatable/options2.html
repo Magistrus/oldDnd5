@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/tableLayout}">
+<head>
+<title>Опции классов</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<table id="options" class="table table-hover nowrap table-sm color-main-bg-500" th:fragment="optionsTable">
+			<thead>
+				<tr>
+					<th>Опция</th>
+					<th>Тип</th>
+					<th>Требование</th>
+					<th>Уровень</th>
+					<th>Источник</th>
+					<th>englishName</th>
+				</tr>
+			</thead>
+		</table>
+		<script>
+			var preSelectOptionType = '_';
+		</script>
+	</div>
+	<script th:src="@{/resources/js/tables/options.js}" layout:fragment="datatable"></script>
+	<script th:src="@{/resources/js/tables/options.info.js}" layout:fragment="datatable1"></script>
+</body>
+</html>

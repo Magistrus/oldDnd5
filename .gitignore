@@ -1,0 +1,34 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/mvnw
+/mvnw.cmd
+/bin/
+/temp/
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/maven-wrapper.jar
+Users/Виталий/git/dnd5e1/wiki/target/m2e-wtp/web-resources/META-INF/maven/com.dnd5/ROOT/pom.properties
+Users/Виталий/git/dnd5e1/wiki/target/m2e-wtp/web-resources/META-INF/maven/com.dnd5/ROOT/pom.xml
+Users/Виталий/git/dnd5e1/wiki/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF

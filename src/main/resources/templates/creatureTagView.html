@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+<title th:text="|Метки - ${race.name}|"></title>
+<script>
+	function rowClicked(value) {
+		var baseUrl = '[[@{/entities/creature/}]]';
+		location.href = baseUrl + value;
+	}
+</script>
+</head>
+<body>
+	<div class="container pb-5 pt-5" layout:fragment="content">
+		<div class="pt-3 content-dnd">
+			<th:block th:each="creatureRace : ${creatureRaces}">
+				<a class="text-reset text-decoration-none" th:href="@{|/creatures/tag/${creatureRace.id}|}"> <span class="badge" th:classappend="${race.id eq creatureRace.id} ? bg-dark : bg-secondary"
+					th:text="${creatureRace.name}"
+				></span>
+				</a>
+			</th:block>
+			<div th:object="${race}">
+				<h5 class="main-header pt-3" th:text="*{name}"></h5>
+				<hr class="line1" />
+				<div>
+					<div th:utext="*{description}"></div>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col" style="width: 3%">CR</th>
+								<th scope="col">Наименование</th>
+								<th scope="col">Вид</th>
+							</tr>
+						</thead>
+						<tr th:each="creature : ${creatures}" style="cursor: pointer" th:attr="onclick=|window.location='/creatures/${#strings.replace(creature.englishName, ' ', '_')}'|">
+							<td th:text="${creature.challengeRating}" />
+							<td th:text="${creature.name}" />
+							<td th:text="${creature.type.cyrilicName}" />
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

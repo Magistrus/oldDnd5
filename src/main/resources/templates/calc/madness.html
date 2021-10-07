@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/js-layout}">
+<head>
+<title>Безумие</title>
+</head>
+<body>
+	<div class="container pb-5 pt-5" style="margin-top: 25px" layout:fragment="content">
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+			<label class="btn btn-main btn-color-main" th:each="typeMadness : ${types}"> <input type="radio" name="options" th:id="${typeMadness}" th:text="${typeMadness.cyrilicName}">
+			</label>
+		</div>
+		<div class="pb-2 pt-2">
+			<button onclick="addMadness()" class="btn btn btn-main btn-color-main">Еще безумия</button>
+		</div>
+		<div class="content-dnd">
+			<div id="content" class="pt-2"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" layout:fragment="script">
+function addMadness() {
+	var type = '';
+	if (document.getElementById('SHORT').checked){
+		type = '?typeMadness=' + 'SHORT';
+	} else if (document.getElementById('LONG').checked){
+		type = '?typeMadness=' + 'LONG';
+	} else if (document.getElementById('UNLIMITED').checked){
+		type = '?typeMadness=' + 'UNLIMITED';
+	}
+	var parent = document.createElement("div");
+	parent.classList.add("pb-1", "pt-1");
+	var element = document.createElement("div");
+	parent.appendChild(element);
+	element.classList.add("card", "main-description")
+	var elementin = document.createElement("div");
+	elementin.classList.add("card-body", "p-1", "main-description-text");
+	element.appendChild(elementin);
+	fetch('/calc/madnessText' + type).then(data => data.text()) .then(html => elementin.innerHTML = html);
+    document.getElementById('content').prepend(parent);
+}
+</script>
+</html>

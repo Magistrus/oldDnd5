@@ -1,0 +1,98 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<nav class="navbar navbar-expand-xl fixed-top navbar-dark bg-dark color-header" th:fragment="header">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/}"> <img class="mr-3" src="/resources/Logo.png"></a>
+			<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-expanded="false" aria-label="Навигация">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbar-main">
+				<ul class="navbar-nav me-auto mt-2 mt-lg-0">
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false"> Персонаж </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/classes}">Классы</a> <a class="dropdown-item" th:href="@{/races}">Расы</a> <a class="dropdown-item" th:href="@{/backgrounds}">Предыстории</a> <a
+								class="dropdown-item" th:href="@{/traits}"
+							>Черты</a> <a class="dropdown-item" th:href="@{/options}">Опции и особенности классов</a> <a class="dropdown-item" th:href="@{/hero/conditions}">Состояния и болезни</a>
+						</div></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/hero/spells}">Заклинания</a></li>
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown" aria-expanded="false"> Сокровища </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/stock/treasures}">Драгоценности</a> <a class="dropdown-item" th:href="@{/stock/artifacts}">Магические предметы</a>
+						</div></li>
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown" aria-expanded="false">Инвентарь</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/stock/armors}">Доспехи</a> <a class="dropdown-item" th:href="@{/stock/weapons}">Оружие</a> <a class="dropdown-item" th:href="@{/stock/equipments}">Снаряжение</a>
+						</div></li>
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown" aria-expanded="false">Мастерская</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/rules}">Правила и термины</a> <a class="dropdown-item" th:href="@{/calc/master}">Ширма</a> <a class="dropdown-item" th:href="@{/calc/idle}">Время
+								простоя</a> <a class="dropdown-item" th:href="@{/calc/buyMagicThings}">Покупка магических вещей</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" th:href="@{/calc/taverna}">Таверна на скорую руку</a> <a class="dropdown-item" th:href="@{/calc/wildMagic}">Дикая магия</a> <a class="dropdown-item"
+								th:href="@{/calc/madness}"
+							>Безумие</a> <a class="dropdown-item" th:href="@{/calc/trader}">Торговец</a> <a class="dropdown-item" th:href="@{/calc/treasure}">Сокровищница</a> <a class="dropdown-item"
+								th:href="@{/calc/encounters}"
+							>Случайные столкновения</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" th:href="@{/sources}">Источники</a>
+						</div></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/entities/gods}">Боги</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/creatures}">Бестиарий</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/references}">Ссылки</a></li>
+					<li sec:authorize="hasRole('ROLE_USER')" class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown" aria-expanded="false">Персонажи</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/builder}">Создать персонажа</a> <a class="dropdown-item" th:href="@{/characters}">Список персонажей</a>
+						</div></li>
+					<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')"><a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-bs-toggle="dropdown" aria-expanded="false">Админка</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href=@{/admin/artifact/add}>Добавить магическую вещь</a> <a class="dropdown-item" th:href=@{/admin/spell/add}>Добавить заклинание</a> <a class="dropdown-item"
+								th:href="@{/admin/class/add}"
+							>Добавить класс</a> <a class="dropdown-item" th:href="@{/admin/race/add}">Добавить рассу</a> <a class="dropdown-item" th:href="@{/admin/background/add}">Добавить предысторию</a> <a
+								class="dropdown-item" th:href="@{/admin/trait/add}"
+							>Добавить черту</a> <a class="dropdown-item" th:href="@{/admin/creature/add}">Добавить в бестиарий</a> <a class="dropdown-item" th:href="@{/admin/creature/parse}">Импорт монстра</a>
+						</div></li>
+				</ul>
+				<form class="d-flex">
+					<div id="settingDropdown" class="dropdown">
+						<button class="btn btn-main btn-color-main dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Источники</button>
+						<div class="dropdown-menu" aria-labelledby="settingDropdown">
+							<div class="form-check form-switch">
+								<input id="baseRule" type="checkbox" class="form-check-input" th:checked="${session.settings == null or session.settings.baseRule}"> <label class="form-check-label badge bg-secondary"
+									for="baseRule"
+								>Базовые</label>
+							</div>
+							<div class="form-check form-switch">
+								<input id="settingRule" type="checkbox" class="form-check-input" th:checked="${session.settings != null and session.settings.setting}"> <label
+									class="form-check-label badge badge-success" for="settingRule"
+								>Сеттинги</label>
+							</div>
+							<div class="form-check form-switch">
+								<input id="moduleRule" type="checkbox" class="form-check-input" th:checked="${session.settings != null and session.settings.module}"><label class="form-check-label badge bg-primary"
+									for="moduleRule"
+								>Модули</label>
+							</div>
+							<div class="form-check form-switch">
+								<input id="homeRule" type="checkbox" class="form-check-input" th:checked="${session.settings != null and session.settings.homeRule}"><label class="form-check-label badge badge-info"
+									for="homeRule"
+								>Домашние</label>
+							</div>
+						</div>
+						<th:block sec:authorize="isAnonymous()">
+							<a class="btn btn-square-outline btn-color-main-outline" th:href="@{/login}"> <img src="/resources/icons/svg/login_black_24dp.svg">
+							</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a class="btn btn-square-outline btn-color-main-outline" th:href="@{/logout}"> <img src="/resources/icons/svg/logout_white_24dp.svg">
+							</a>
+						</th:block>
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+</body>
+</html>

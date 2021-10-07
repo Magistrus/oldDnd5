@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+<title>Полезные ссылки</title>
+</head>
+<body>
+	<div class="container pt-5 pb-5" layout:fragment="content">
+		<div class="pt-3 content-dnd">
+			<table class="table table-sm">
+			<tbody>
+			</tbody>
+				<tr th:each="reference : ${references}">
+				<td class="col-1"><a th:href="@{${reference.url}}" class="card-link" th:text="${reference.url}"></a></td>
+				<td th:utext="${reference.description}"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
