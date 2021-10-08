@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/tableLayout}">
+<head>
+<title>Заклинания</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<table id="spells" class="table table-hover table-sm nowrap color-main-bg-500" th:fragment="spellTable">
+			<thead>
+				<tr>
+					<th>Школа</th>
+					<th title="Уровень заклинания">Уровень</th>
+					<th>Классы</th>
+					<th>Название</th>
+					<th title="Время накладывания">Время</th>
+					<th>Длительность</th>
+					<th>Дистанция</th>
+					<th title="риуал">Р</th>
+					<th title="концентрация">К</th>
+					<th title="вербальный">В</th>
+					<th title="соматический">С</th>
+					<th title="материальный">М</th>
+					<th>Тип урона</th>
+					<th>Источник</th>
+					<th>English</th>
+					<th>Расходуемые материалы</th>
+				</tr>
+			</thead>
+		</table>
+		<script>var preSelectClass = ''</script>
+	</div>
+	<script th:src="@{/resources/js/tables/spells.js}" layout:fragment="datatable"></script>
+	<script th:src="@{/resources/js/tables/spell.info.js}" layout:fragment="datatable1"></script>
+</body>
+</html>

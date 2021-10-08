@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+layout:decorate="~{layouts/layout}">
+<head>
+<title>Dnd 5 Club</title>
+</body>
+</head>
+<body>
+	<div class="container pb-5 pt-5" layout:fragment="content">
+		<div class="card" th:object="${place}">
+			<div class="card-header" th:text="*{name}"></div>
+			<div class="card-body">
+				<p th:utext="*{description}" />
+			</div>
+		</div>
+		<div class="list-group">
+			<a th:href="@{|/place/${child.id}|}" class="list-group-item list-group-item-action" th:each="child : ${children}" th:text="${child.name}"></a>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/tableLayout}">
+<head>
+<title>Черты</title>
+</head>
+<body>
+	<table id="example" class="table table-hover table-sm  color-main-bg-500" layout:fragment="content">
+		<thead>
+			<tr>
+				<th>Черта</th>
+				<th>Требования</th>
+				<th title="Увеличение характеристик">Хар-ки</th>
+				<th title="Получение навыков">Навыки</th>
+				<th>Источник</th>
+				<th>englishName</th>
+			</tr>
+		</thead>
+	</table>
+	<script layout:fragment="datatable">
+	$(document).ready(function() {
+		$('a.toggle-vis').on( 'click', function (e) {
+	        e.preventDefault();
+	        var column = table.column( $(this).attr('data-column') );
+	        column.visible( ! column.visible() );
+	    });
+		var table = $('#example').DataTable({
+			stateSave: true,
+	        dom: '<"top"<"left-col"f><"right-col"B>>rtip',
+	        serverSide : true,
+			deferRender: true,
+			ajax : '/data/traits',
+	        scrollY: "65vh",
+	        scrollX: "65vh",
+			scrollCollapse: true,
+	        scroller: true,
+	        paging: false,
+	        select: {
+	            style: 'single'
+	        },
+	        autoWidth: false,
+			columns : [
+						{
+							data : "name",
+							width : "30%", 
+							render : function(data, type, row) {
+								if (type === 'display') {
+									return '<h6>' + data + (row.englishName ? '<small class="text-secondary"> [' + row.englishName + ']</small>' : '') 
+									+ '</h6>' + '<div class="text-secondary"><small>' + row.book + '</small></div>';
+								}
+								return data;
+							}, 
+						},
+						{
+							data : "requirement",
+							width : "15%"
+						},
+						{
+							data : "abilities",
+							width : "10%",
+						    searchable: false,
+						}, 
+						{
+							data : "skills",
+							width : "10%",
+						    searchable: false,
+
+						},
+						{
+							data : "book",
+							width : "10%",
+							searchable: false,
+						},
+						{
+							data : "englishName",
+							width : "1%"
+						},
+					],
+					columnDefs : [
+			            {
+			                targets : [ 2 ],
+			                visible : false
+			            },
+			            {
+			                "targets": [ 3 ],
+			                "visible": false
+				        },
+			            {
+			                "targets": [ 4 ],
+			                "visible": false
+				        },
+			            {
+			                "targets": [ 5 ],
+			                "visible": false
+				        },
+				    ],
+				    buttons: [
+			            {
+			                extend: 'searchPanes',
+		                	className: 'btn-main btn-sm btn-color-main',
+			            },
+			            {
+			        		extend: 'colvis',
+			                text: 'Столбцы',
+		                	className: 'btn-square btn-color-main',
+			                buttons: [
+			                    {
+			                        text: 'Увлеличение характеристик',
+			                        action: function ( e, dt, node, config ) {
+			                            dt.column( 2 ).visible( ! dt.column( 2 ).visible() );
+			                        }
+			                    },
+			                    {
+			                        text: 'Получение навыков',
+			                        action: function ( e, dt, node, config ) {
+			                            dt.column( 3 ).visible( ! dt.column( 3 ).visible() );
+			                        }
+			                    },
+			                    {
+			                        text: 'Источник',
+			                        action: function ( e, dt, node, config ) {
+			                            dt.column( 4 ).visible( ! dt.column( 4 ).visible() );
+			                        }
+			                    },
+			                ]
+			            }
+			        ],
+					language : {
+						processing : "Загрузка...",
+						searchPlaceholder: "Поиск ",
+						search : "_INPUT_",
+						lengthMenu : "Показывать _MENU_ записей на странице",
+						zeroRecords : "Ничего не найдено",
+						info : "Показано с _START_ до _END_ из _TOTAL_",
+						infoEmpty : "Нет доступных записей",
+						infoFiltered : "(filtered from _MAX_ всего)",
+						paginate : {
+							first : "В начало",
+							previous : "Предыдущая",
+							next : "Следущая",
+							last : "В конец"
+						},
+						searchPanes: {
+							clearMessage : "Сбросить",
+				            title : {
+				                    _: 'Отфильтровано - %d',
+				                    0: 'Фильтры не активны (Ctrl или Shift для множественного выбора)',
+				                    1: 'Один фильтр выбран',
+				            },
+				            collapse: 'Фильтры (%d)'
+				        },
+					},
+					ordering : true,
+				});
+		$('#example tbody').on('click', 'tr', function () {
+			var tr = $(this).closest('tr');
+			var row = table.row( tr );
+			var element = document.getElementById("info");
+			element.innerHTML = name + format(row.data());
+		});
+		$('.dataTables_filter input').addClass('input-dnd');
+	});
+	function format ( d ) {
+		var name = '<h5 class="main-header">' + d.name + ' <small class="text-secondary">[' + d.englishName +']</small></h5>';
+		var info = name + '<hr class ="line1"/><p class ="mb-2 mt-1">';
+		if (d.requirement !== null) {
+			info+='<p class ="mb-2 mt-1"><em>Требования: '+ d.requirement +'</em></p>';
+			info+='<hr class ="mb-1 mt-1" align="center" size="5" color="#822000" />';
+		}
+		info+= d.description;
+		info+= '<p class="text-right font-weight-light"><small>Источник: '+ d.book + '</small></p>';
+		return info; 
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/js-layout}">
+<head>
+<title th:text="${creature.name}"></title>
+</head>
+<body>
+	<div class="container pt-5 pb-5" th:object="${creature}" layout:fragment="content">
+		<div class="pt-3"></div>
+		<div class="row align-items-center">
+			<div class="col-auto me-auto">
+				<h5>
+					<span class="main-header" th:text="*{name}"></span><small><span  class="text-secondary" th:if="*{englishName}" th:text="| [*{englishName}]|"></span></small>
+				</h5>
+			</div>
+			<div class="col-auto">
+				<a class="text-reset text-decoration-none" th:each="race : *{races}" th:href="@{|/creatures/tag/${race.id}|}"><small class="badge bg-secondary"  th:text="|${race.name}|"></small> </a>
+				<span th:text="*{sizeName}"></span> <span th:text="*{type.cyrilicName}"></span><a class="text-danger" th:if="*{raceName != null}" th:href="@{'/creatures/tag/' + *{raceId}}"
+					th:text="| *{raceName}|"
+				></a>, <span th:text="*{alignment.cyrilicName}"></span>
+			</div>
+			<div class="col-auto">
+				<a th:href="@{|/creatures/json/*{id}|}"><img th:src="@{/resources/icons/fvtt.png}" width="25"></a>
+			</div>
+		</div>
+		<hr class="line1" />
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation"><a class="nav-link active" id="statblock-tab" data-bs-toggle="tab" href="#statblock" role="tab" aria-controls="statblock" aria-selected="true">Статблок</a>
+			</li>
+			<li th:if="${creature.description}" class="nav-item" role="presentation"><a class="nav-link" id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info"
+				aria-selected="true"
+			>Описание</a></li>
+			<li th:each="race : *{races}" class="nav-item" role="presentation"><a class="nav-link" th:id="${race.id} + 'race-tab'" data-bs-toggle="tab" th:href="'#race' + ${race.id}" role="tab"
+				aria-controls="race" aria-selected="true"
+			>[[${race.name}]]</a></li>
+			<li th:if="${creature.lair}" class="nav-item" role="presentation"><a class="nav-link" id="lair-tab" data-bs-toggle="tab" href="#lair" role="tab" aria-controls="lair" aria-selected="true">Логово</a></li>
+			<li th:unless = "${urls.empty}" class="nav-item" role="presentation"><a class="nav-link" id="image-tab" data-bs-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="true">Изображения</a></li>
+		</ul>
+		<div class="tab-content content-dnd" id="myTabContent">
+			<div class="tab-pane fade show active" id="statblock" role="tabpanel" aria-labelledby="statblock-tab">
+				<div class="card main-description">
+					<div class="row">
+						<div class="col-auto me-auto">
+							<div class="card-body p-0 main-description-text">
+								<b>Класс доспеха</b>
+								<th:block th:text="*{AC}" />
+								<th:block th:if="*{bonusAC}" th:text="*{bonusAC}" />
+								<th:block th:unless="${#lists.isEmpty(creature.armorTypes)}" th:text="'(' + *{armorTypeString} + ')'" />
+							</div>
+							<div>
+								<b>Хиты</b> <span th:text="*{hp}"></span>
+							</div>
+							<div>
+								<b>Скорость</b>
+								<th:block th:utext="*{allSpeed}" />
+							</div>
+						</div>
+						<div class="col-auto">
+							<div class="text-color-opacity" th:if="${creature.book}" th:text="|Источник: ${creature.book.name}${creature.page eq null?'':', стр.' + creature.page} [${creature.book.source}]|"></div>
+						</div>
+					</div>
+				</div>
+				<hr class="mb-1 mt-1" color="#A12000" />
+				<div class="row row-cols-6 justify-content-center align-items-center">
+					<div class="col-2 col-lg-1 text-center" title="Сила" data-bs-toggle="popover" data-bs-placement="top">
+						<h6 class="main-header">СИЛ</h6>
+					</div>
+					<div class="col-2 col-lg-1 text-center" title="Ловкость" data-bs-toggle="popover" data-bs-placement="top">
+						<h6 class="main-header">ЛОВ</h6>
+					</div>
+					<div class="col-2 col-lg-1 text-center" title="Телосложение" data-bs-toggle="popover" data-bs-placement="top">
+						<h6 class="main-header">ТЕЛ</h6>
+					</div>
+					<div class="col-2 col-lg-1 text-center" title="Интеллект" data-bs-toggle="popover" data-bs-placement="top">
+						<h6 class="main-header">ИНТ</h6>
+					</div>
+					<div class="col-2 col-lg-1 text-center" title="Мудрость" data-bs-toggle="popover" data-bs-placement="top">
+						<h6 class="main-header">МДР</h6>
+					</div>
+					<div class="col-2 col-lg-1 text-center" title="Харизма" data-bs-toggle="popover" data-bs-placement="top">
+						<h6 class="main-header">ХАР</h6>
+					</div>
+				</div>
+				<div class="row row-cols-6 justify-content-center align-items-center">
+					<div class="col-2 col-lg-1 text-center text-monospace" th:text="${creature.strengthText()}"></div>
+					<div class="col-2 col-lg-1 text-center text-monospace" th:text="${creature.dexterityText()}"></div>
+					<div class="col-2 col-lg-1 text-center text-monospace" th:text="${creature.constitutionText()}"></div>
+					<div class="col-2 col-lg-1 text-center text-monospace" th:text="${creature.intellectText()}"></div>
+					<div class="col-2 col-lg-1 text-center text-monospace" th:text="${creature.wizdomText()}"></div>
+					<div class="col-2 col-lg-1 text-center text-monospace" th:text="${creature.charismaText()}"></div>
+				</div>
+				<hr class="mb-2 mt-2" color="#A12000" />
+				<div class="card main-description">
+					<div class="card-body p-0 main-description-text">
+						<div class="mb-0 mt-0" th:unless="*{#lists.isEmpty(savingThrows)}">
+							<b>Спасброски </b><span th:each="savingThrow, iterStat : *{savingThrows}" th:text="!${iterStat.last} ? ${savingThrow.text} + ', ': ${savingThrow.text}"></span>
+						</div>
+						<div class="mb-0 mt-0" th:unless="*{#lists.isEmpty(skills)}">
+							<b>Навыки </b><span th:each="skill, iterStat : *{skills}" th:text="${iterStat.last} ? ${skill.cyrilicText} : ${skill.cyrilicText} +', '"></span>
+						</div>
+						<div class="mb-0 mt-0" th:unless="*{#lists.isEmpty(vulnerabilityDamages)}">
+							<b>Уязвимость к урону </b><span th:each="vulnerabilityDamage, iterStat : *{vulnerabilityDamages}"
+								th:text="${iterStat.last} ? ${vulnerabilityDamage.cyrilicName} : ${vulnerabilityDamage.cyrilicName} + ', '"
+							></span>
+						</div>
+						<div class="mb-0 mt-0" th:unless="*{#lists.isEmpty(resistanceDamages)}">
+							<b>Сопротивление к урону </b><span th:each="resistanceDamages, iterStat : *{resistanceDamages}"
+								th:text="${iterStat.last} ? ${resistanceDamages.cyrilicName} : ${resistanceDamages.cyrilicName} + ', '"
+							></span>
+						</div>
+						<div class="mb-0 mt-0" th:unless="*{#lists.isEmpty(immunityDamages)}">
+							<b>Иммунитет к урону </b><span th:each="immunityDamage, iterStat : *{immunityDamages}" th:text="${iterStat.last} ? ${immunityDamage.cyrilicName} : ${immunityDamage.cyrilicName} + ', '"></span>
+						</div>
+						<div class="mb-0 mt-0" th:unless="*{#lists.isEmpty(immunityStates)}">
+							<b>Иммунитет к состоянию </b><span th:each="state, iterStat : *{immunityStates}"> <a class="text-danger" th:href="@{|/conditions/${state.id}|}"
+								th:text="${iterStat.last} ? ${state.cyrilicName} : ${state.cyrilicName} + ', '" tabindex="0" data-bs-trigger="hover" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="auto"
+								th:title="${conditions.get(state.id).name}" th:attr="data-bs-content=${conditions.get(state.id).description}"
+							></a></span>
+						</div>
+						<div class="mb-0 mt-0">
+							<b>Чувства</b> <span th:utext="*{allSense}"></span>
+						</div>
+						<div class="mb-0 mt-0">
+							<b>Языки</b> <span th:each="language, iterStat : *{languages}" th:text="${iterStat.last} ? ${language.name} : ${language.name} + ', '"> </span>
+						</div>
+						<div class="mb-0 mt-0">
+							<b>Опасность</b> <span th:text="*{challengeRating}"></span> (<span th:text="*{exp}"></span> опыта)
+						</div>
+					</div>
+				</div>
+				<div th:unless="*{feats.empty}">
+					<hr class="mb-0 mt-2" color="#A12000" />
+					<div class="d-flex flex-wrap" th:each="feat : *{feats}">
+						<strong th:text="|${feat.name}.&nbsp;|"></strong>
+						<div class="flex-fill" th:utext="${feat.description}"></div>
+					</div>
+				</div>
+				<div th:unless="*{actions.empty}">
+					<div class="separator main-header pb-2 pt-2">Действия</div>
+					<div th:each="action : ${actions}">
+						<div class="d-inline-block"><strong th:text="|${action.name}.&nbsp;|"></strong></div>
+						<div class="d-inline-block" th:utext="${action.description}"></div>
+					</div>
+				</div>
+				<div th:unless="*{reactions.empty}">
+					<div class="separator main-header">Реакции</div>
+					<div class="d-flex flex-wrap" th:each="action : *{reactions}">
+						<strong th:text="|${action.name}.&nbsp;|"></strong>
+						<div th:utext="${action.description}"></div>
+					</div>
+				</div>
+				<div th:unless="*{bonusActions.empty}">
+					<div class="separator main-header">Бонусные действия</div>
+					<div class="d-flex flex-wrap" th:each="action : *{bonusActions}">
+						<strong th:text="|${action.name}.&nbsp;|"></strong>
+						<div th:utext="${action.description}"></div>
+					</div>
+				</div>
+				<div th:unless="*{legendaries.empty}">
+					<div class="separator main-header pb-2 pt-2">Легендарные действия</div>
+					<div th:if="*{legendary}" th:utext="*{legendary}"></div>
+					<div class="pb-2" th:unless="${creature.legendary eq null}" th:utext="${creature.legendary}"></div>
+					<div class="pb-2" th:unless="*{legendary}">
+						<span th:text="*{name}"></span> может совершить 3 легендарных действия, выбирая из представленных ниже вариантов. За один раз можно использовать только одно легендарное действие, и
+						только в конце хода другого существа. <span th:text="*{name}"></span> восстанавливает использованные легендарные действия в начале своего хода.
+					</div>
+					<div class="d-flex flex-wrap" th:each="action : *{legendaries}">
+						<strong th:text="|${action.name}.&nbsp;|"></strong>
+						<div th:utext="${action.description}"></div>
+					</div>
+				</div>
+				<div class="pt-2" th:unless="*{habitates.empty}">
+					<div class="separator title">Места обитания</div>
+					<th:block th:each="habitate, iterStat : *{habitates}" th:text="${iterStat.last} ? ${habitate.name} : ${habitate.name} + ', '">
+					</th:block>
+				</div>
+			</div>
+			<div th:each="race : *{races}" class="tab-pane fade" th:id="'race' + ${race.id}" role="tabpanel" aria-labelledby="race-tab">
+				<div class="pt-2" th:utext="${race.description}"></div>
+			</div>
+			<div th:if="*{description}" class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+				<div class="pt-2" th:utext="*{description}"></div>
+			</div>
+			<div th:if="*{lair}" class="tab-pane fade" id="lair" role="tabpanel" aria-labelledby="lair-tab">
+				<div class="pt-2" th:if="*{lair.description}" th:utext="*{lair.description}"></div>
+				<div th:if="*{lair.action}" class="separator">Действи логова</div>
+				<div th:if="*{lair.action}" th:utext="*{lair.action}"></div>
+				<h5 th:if="*{lair.effect}" class="separator">Местные эффекты</h5>
+				<div th:if="*{lair.effect}" th:utext="*{lair.effect}"></div>
+			</div>
+			<div th:unless = "${urls.empty}" class="tab-pane fade" id="image" role="tabpanel" aria-labelledby="image-tab">
+				<div class="container w-50">
+					<div id="carouselExampleControls" class="carousel slide carousel-dark" data-bs-ride="carousel">
+						<div class="carousel-inner">
+							<div class="carousel-item" th:each="url, iter : ${urls}" th:classappend="${iter.first ? 'active' : ''}">
+								<img class="d-block w-100" th:src="@{${url}}" />
+							</div>
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="visually-hidden">Предыдущий</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="visually-hidden">Следующий</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" layout:fragment="script">
+	$(function() {
+		$('body').popover({
+			selector : '[data-bs-toggle="popover"]',
+			trigger : 'hover',
+			container : 'body',
+			html : true,
+			delay : {
+				"show" : 250,
+				"hide" : 200
+			},
+		}).on('hide.bs.popover', function() {
+			if ($(".popover:hover").length) {
+				return false;
+			}
+		});
+
+		$('body').on('mouseleave', '.popover', function() {
+			$('.popover').popover('hide');
+		});
+	})
+</script>
+</html>

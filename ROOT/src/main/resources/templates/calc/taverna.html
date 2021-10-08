@@ -1,0 +1,83 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/js-layout}">
+<head>
+<title>Генератор таверн</title>
+</head>
+<body>
+	<div class="container pb-5 pt-5" layout:fragment="content">
+		<div class="pb-4"></div>
+		<a th:href="@{/calc/taverna/}" class="btn btn-outline-secondary" type="button" id="calc">Случайно</a> <a
+			th:href="@{/calc/taverna/(tavernaType=${type}, habitatType=${habitatType}, tavernaCategory=${tavernCategoty})}" class="btn btn-outline-secondary" type="button" id="calc" th:each="type : ${types}"
+			th:text="${type.names}"
+		>Генерация</a>
+		<h5 class="main-header pb-2 pt-3" th:text="${name}"></h5>
+		<div class="input-group pb-2">
+			<span class="input-group-text">Категория:</span>
+			<div class="dropdown">
+				<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					th:text="${tavernCategoty.name + ' заведение'}"
+				></a>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					<a class="dropdown-item" th:each="cate : ${categories}" th:text="${cate.name + ' заведение'}" th:href="@{/calc/taverna(tavernaCategory=${cate}, habitatType=${habitatType})}">>Action</a>
+				</div>
+			</div>
+			<span class="input-group-text">Местность:</span>
+			<div class="dropdown">
+				<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${habitatType.name}"></a>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					<a class="dropdown-item" th:each="habitat : ${habitates}" th:text="${habitat.name}" th:href="@{/calc/taverna(tavernaCategory=${tavernCategoty}, habitatType=${habitat})}"></a>
+				</div>
+			</div>
+		</div>
+		<div class="content-dnd">
+			<h5 class="separator title">За стойкой</h5>
+			<div class="pb-2" th:text="${owner}"></div>
+			<h5 class="separator title">Атмосфера: [[${atmosphere.name}]]</h5>
+			<div class="pb-2" th:utext="${atmosphere.description}"></div>
+			<h5 class="separator title">Можно заказать</h5>
+			<p class="card-text" th:if="${dish}" th:utext="|Фирменное блюдо: ${dish.name}|"></p>
+			<p class="card-text" th:if="${specialDrink}">
+			<p class="card-text" th:if="${specialDrink}">
+				<i>Таинственная фигура, закутанная в зеленый плащ, сидит за соседним столиком. Незнакомец достает бутылку с како-то жидкостью и рассказывает, что удача сама найдет того, кто выпьет стакан
+					этого напитка. Как только стаканы пустеют, а жидкость проглатывается, таинственная фигура исчезает и ее больше не видно.</i>
+			</p>
+			<div class="separator title" th:if="${specialDrink}">
+				<strong>Специальный напиток: </strong>
+				<th:block th:utext="${specialDrink}"></th:block>
+			</div>
+			<div th:if="${drink}" th:utext="|Фирменный напиток: ${drink.name}|"></div>
+			<h5 th:if="${topic}" class="separator title pt-2">Обсуждаемые темы</h5>
+			<p class="card-text" th:if="${topic}" th:utext="${topic.name}"></p>
+			<h5 th:if="${event}" class="separator title">События</h5>
+			<p class="card-text" th:if="${event}" th:utext="${event.description}"></p>
+			<h5 class="separator title">Посетители</h5>
+			<div th:each="visitor : ${visitors}" th:text="${visitor}"></div>
+			<div th:if="${visitors.empty}">Нет</div>
+		</div>
+	</div>
+	<script type="text/javascript" layout:fragment="script">
+		function getParameterByName(name, url) {
+			if (!url)
+				url = window.location.href;
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex
+					.exec(url);
+			if (!results)
+				return null;
+			if (!results[2])
+				return '';
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+
+		function filter(select) {
+			var baseUrl = '[[@{/calc/taverna?}]]';
+			var category = $("#cateType").val();
+			var tavernaType = getParameterByName('tavernaType');
+			var parameters = "tavernaCategory=" + category;
+			if (tavernaType != null) {
+				parameters += "&tavernaType=" + tavernaType;
+			}
+			window.location = baseUrl + parameters;
+		}
+	</script>
+</body>
+</html>

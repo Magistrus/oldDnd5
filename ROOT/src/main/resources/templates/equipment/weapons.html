@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/js-layout}">
+<head>
+<title>Оружие</title>
+</head>
+<body>
+	<div class="container pb-5 pt-5" layout:fragment="content">
+		<div class="pt-3"></div>
+		<div class="full-content-dnd content-dnd pb-5">
+			<div class="table-responsive">
+				<table class="table table-striped table-sm">
+					<thead>
+						<tr>
+							<th scope="col" style="width: 30%">Название</th>
+							<th class="text-center" scope="col" style="width: 10%">Стоимость</th>
+							<th class="text-center" scope="col" style="width: 15%">Урон</th>
+							<th class="text-center" scope="col" style="width: 12%">Вес (в фнт.)</th>
+							<th class="text-center" scope="col">Свойства</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:each="type : ${types}">
+							<tr class="table-active">
+								<td colspan="5" class="title text-center"><strong th:text="${type.name}"></strong></td>
+							</tr>
+							<tr th:each="weapon : ${weapons.get(type)}" th:id="'d' + ${type.ordinal()}">
+								<td class="hiddenRow">
+									<div>
+										<span th:text="${weapon.name}"></span> <small class="text-secondary" th:if="${weapon.englishName}" th:text="|(${weapon.englishName})|"></small>
+									</div>
+								</td>
+								<td class="text-center">
+									<div>
+										<th:block th:text="${weapon.cost + ' ' + weapon.currency.name}" />
+									</div>
+								</td>
+								<td class="text-center">
+									<div th:text="${(weapon.numberDice eq null ? '' : weapon.numberDice) + '' + (weapon.damageDice eq null ? '' : weapon.damageDice) + ' ' + weapon.damageType.cyrilicName}"></div>
+								</td>
+								<td class="text-center">
+									<div th:text="${weapon.weight}"></div>
+								</td>
+								<td><th:block th:each="property, iterStat : ${weapon.properties}">
+										<a data-bs-toggle="popover" th:attr="data-bs-content=|${property.description}<br><em>${weapon.special}</em>|" th:href="@{'weapons/property/' + ${property.id}}"
+											th:text="${iterStat.last ? property.name : property.name + ' '}"
+										> </a>
+										<th:block th:if="${property.id eq 10}" th:text="'('+ ${weapon.numberDice} + ${weapon.twoHandDamageDice + ')'}" />
+										<th:block th:if="${property.id eq 1 or property.id eq 6}" th:text="'(дис. '+ ${weapon.minDistance} + '/' + ${weapon.maxDistance + ')'}" />
+										<div th:if="${property.id == 7}" class="modal fade" th:id="'d'+ ${property.id} + ${weapon.id}" tabindex="-1" role="dialog" th:attr="aria-labelledby='d'+ ${property.id} + ${weapon.id}"
+											aria-hidden="true"
+										>
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content color-main-bg-500">
+													<div class="modal-header color-main-bg-600">
+														<h5 class="modal-title" id="exampleModalLongTitle" th:text="${property.name}"></h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body" th:utext="${weapon.special}"></div>
+												</div>
+											</div>
+										</div>
+									</th:block></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" layout:fragment="script">
+	$(function() {
+		$('body').popover({
+			selector : '[data-bs-toggle="popover"]',
+			trigger : 'hover',
+			container : 'body',
+			html : true,
+			delay : {
+				"show" : 250,
+				"hide" : 200
+			},
+		}).on('hide.bs.popover', function() {
+			if ($(".popover:hover").length) {
+				return false;
+			}
+		});
+
+		$('body').on('mouseleave', '.popover', function() {
+			$('.popover').popover('hide');
+		});
+	})
+</script>
+</html>

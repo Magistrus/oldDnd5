@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/datatable-mobile-layout}">
+<head>
+<title>Опции классов</title>
+<style>
+</style>
+</head>
+<body>
+	<div class="container-fluid" layout:fragment="content">
+		<table id="options" class="table table-hover table-sm color-main-bg-500">
+			<thead>
+				<tr>
+					<th>Опция</th>
+					<th>Тип</th>
+					<th>Требование</th>
+					<th>Уровень</th>
+					<th>Источник</th>
+					<th>englishName</th>
+				</tr>
+			</thead>
+		</table>
+		<div class="modal fade" id="optionsWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+				<div class="modal-content color-main-bg-500">
+					<div class="modal-body"></div>
+					<div class="modal-header color-main-bg-600">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script layout:fragment="datatable">
+	$(document).ready(function() {
+		$('a.toggle-vis').on('click', function(e) {
+			e.preventDefault();
+			var column = table.column($(this).attr('data-column'));
+			column.visible(!column.visible());
+		});
+		var table = $('#options').DataTable(
+		{
+			iDisplayLength : 12,
+			dom : 'pBfrti',
+			processing : true,
+			serverSide : true,
+			ajax : '/data/options',
+			scrollY : "65vh",
+			scrollX : "65vh",
+			columns : [
+				{
+					data : "name",
+					width : "30%",
+					render : function(data, type, row) {
+						if (type === 'display') {
+							return '<h6>' + data + (row.englishName ? '<small class="text-secondary"> (' + row.englishName	+ ')</small>' : '')
+							+ '</h6>'
+							+ '<div class="text-secondary"><small>'
+							+ row.book
+							+ '</small></div>';
+						}
+						return data;
+					},
+				},
+				{
+					data : "optionTypes",
+					width : "10%",
+					searchable : false,
+				},
+				{
+					data : "prerequisite",
+					width : "30%",
+				},
+				{
+					data : "level",
+					width : "1%",
+					searchable : false,
+				},
+				{
+					data : "book",
+					width : "10%",
+					searchable : false,
+				},
+				{
+					data : "englishName",
+					width : "1%"
+				}, ],
+				columnDefs : [ {
+					targets : [ 2 ],
+					visible : false
+				}, {
+					targets : [ 3 ],
+					visible : false
+				}, {
+					"targets" : [ 4 ],
+					"visible" : false
+				}, {
+					"targets" : [ 5 ],
+					"visible" : false
+				}, ],
+				buttons : [
+					{
+						extend : 'searchPanes',
+						className : 'btn-main btn-sm btn-color-main',
+					},
+					{
+						extend : 'colvis',
+						text : 'Столбцы',
+						className : 'btn-main btn-sm btn-color-main',
+						buttons : [
+							{
+								text : 'Источник',
+								action : function(e,dt,node,config) {
+									dt.column(4).visible(!dt.column(4).visible());
+								}
+							}, ]
+					} ],
+					language : {
+						processing : "Загрузка...",
+						searchPlaceholder : "Поиск ",
+						search : "_INPUT_",
+						lengthMenu : "Показывать _MENU_ записей на странице",
+						zeroRecords : "Ничего не найдено",
+						info : "Показано с _START_ до _END_ из _TOTAL_",
+						infoEmpty : "Нет доступных записей",
+						infoFiltered : "(filtered from _MAX_ всего)",
+						paginate : {
+							first : "В начало",
+							previous : "<",
+							next : ">",
+							last : "В конец"
+						},
+						searchPanes : {
+							clearMessage : "Сбросить",
+							title : {
+								_ : 'Отфильтровано - %d',
+								0 : 'Фильтры не активны (Ctrl или Shift для множественного выбора)',
+								1 : 'Один фильтр выбран',
+							},
+							collapse : 'Фильтры (%d)'
+						},
+					},
+					ordering : true,
+				});
+		$('#options tbody').on('click','tr',function() {
+			var tr = $(this).closest('tr');
+			var row = table.row(tr);
+			$('#optionsWindow').find(".modal-body")
+			.html(format(row.data()));
+			$('#optionsWindow').modal('show');
+		});
+	});
+	function format(d) {
+		var name = '<h5 class="main-header mb-1">' + d.name
+		+ ' <small class="text-secondary">(' + d.englishName + ')'
+		+ '</small></h5>';
+		var info = name + '<p class ="mb-1 mt-1"><small>' + d.type + '</small></p>';
+		info += '<hr class ="line1"/><p class ="mb-2 mt-1">';
+		info += '<p class ="mb-1 mt-1"><strong>Требования:</strong> ';
+		if (d.level === null) {
+			info += d.prerequisite + '.';
+		} else if (d.prerequisite === 'Нет') {
+			info += ' Уровень ' + d.level + ' или выше';
+		} else {
+			info += d.prerequisite + ' и ' + ' уровень ' + d.level + ' или выше.';
+		}
+		info += '</p>';
+		info += '<hr class ="mb-1 mt-1" align="center" size="5" color="#822000" />';
+		info += d.description + '<p class="text-right font-weight-light"><small>Источник: ' + d.book + '</small></p>';
+		return info;
+	}
+	</script>
+</body>
+</html>

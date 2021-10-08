@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+<title>Ширма Мастера Подземелий</title>
+<style>
+.invert {
+	filter: invert(100%);
+	-webkit-filter: invert(85%) sepia(80%);
+}
+</style>
+</head>
+<body>
+	<div class="container-flex pt-5 pb-5 pl-1 pr-1" layout:fragment="content">
+		<div class="pt-2 full-content-dnd content-dnd">
+			<div class="accordion" id="masterAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingOne">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#move" aria-expanded="false">Движение</button>
+					</h2>
+					<div class="accordion-collapse collapse" id="move" aria-labelledby="headingOne" data-bs-parent="#masterAccordion">
+						<div class="accordion-body">
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/run.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Перемещение</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 5 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/mountain-climbing.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Лазание</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 10 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/pool-dive.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Плавание</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 10 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/falling.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Упасть ничком</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 0 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/half-body-crawling.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Ползание</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 10 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/strong.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Встать</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: половина скорости</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/jumping-rope.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Прыжок в высоту</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 5 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/jump-across.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Прыжок в длину</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: 5 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/juggler.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Импровизация</strong>
+									</div>
+									<div class="row">
+										<em>Любое движение не из списка</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/stone-pile.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Труднопроходимая местность</strong>
+									</div>
+									<div class="row">
+										<em>Модификатор: +5 футов за 5 футов</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/grab.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Движение в захвате</strong>
+									</div>
+									<div class="row">
+										<em>Модификатор: скорость снижена вдвое</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/horse-head.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Посадка в седло и спешивание</strong>
+									</div>
+									<div class="row">
+										<em>Стоимость: половина скорости</em>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="headingTwo">
+						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#action" aria-expanded="false" aria-controls="action" data-bs-parent="#masterAccordion">Действие
+							1/ход</button>
+					</h2>
+					<div id="action" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+						<div class="accordion-body">
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/swordman.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Атака</strong>
+									</div>
+									<div class="row">
+										<em>Рукопашная или дальнобойная атака</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/grab.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Захват</strong>
+									</div>
+									<div class="row">
+										<em>Особая рукопашная атака</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/push.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Толчок</strong>
+									</div>
+									<div class="row">
+										<em>Особая рукопашная атака</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/magic-swirl.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Наложение заклинания</strong>
+									</div>
+									<div class="row">
+										<em>Наложение в 1 действие</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/sprint.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Рывок</strong>
+									</div>
+									<div class="row">
+										<em>Удвоение скорости</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/hooded-figure.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Отход</strong>
+									</div>
+									<div class="row">
+										<em>Предотращает провокацию атаки</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/two-shadows.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Уклонение</strong>
+									</div>
+									<div class="row">
+										<em>Уменьшает вероятность пападания</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/handcuffs.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Высвобождение</strong>
+									</div>
+									<div class="row">
+										<em>Высвобождение из захвата</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/relationship-bounds.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Помощь</strong>
+									</div>
+									<div class="row">
+										<em>Дает преимущество союзнику</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/robber-hand.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Использование предмета</strong>
+									</div>
+									<div class="row">
+										<em>Взаимодействие с предметом</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/attached-shield.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Взять щит</strong>
+									</div>
+									<div class="row">
+										<em>Надеть или снять щит</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/ninja-head.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Засада</strong>
+									</div>
+									<div class="row">
+										<em>Попытка скрыться</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/magnifying-glass.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Поиск</strong>
+									</div>
+									<div class="row">
+										<em>Активный поиск чего-то</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/cherish.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Стабилизация</strong>
+									</div>
+									<div class="row">
+										<em>Стабилизирует состояние</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/hourglass.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Подготовка</strong>
+									</div>
+									<div class="row">
+										<em>Выбор условия для действия</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/conqueror.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Классовая способность</strong>
+									</div>
+									<div class="row">
+										<em>Навык класса и расы</em>
+									</div>
+								</div>
+							</div>
+							<div class="row pt-1">
+								<div class="col-3">
+									<img class="invert" data-placement="top" th:src="@{/resources/icons/juggler.svg}" height="47">
+								</div>
+								<div class="col">
+									<div class="row">
+										<strong>Импровизация</strong>
+									</div>
+									<div class="row">
+										<em>Действие не из списка</em>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

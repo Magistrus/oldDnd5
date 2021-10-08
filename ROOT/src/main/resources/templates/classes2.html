@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/tableLayout}">
+<head>
+<title>Классы</title>
+<link rel="stylesheet" th:href="@{/resources/css/card.columns.flex.css}" />
+<script th:src="@{/resources/js/fixCardColumn.js}"></script>
+</head>
+<body>
+	<table id="classes" class="table table-hover table-sm color-main-bg-500" layout:fragment="content">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Название</th>
+				<th>Кость Хитов</th>
+				<th>Источник</th>
+				<th>englishName</th>
+			</tr>
+		</thead>
+	</table>
+	<script th:src="@{/resources/js/tables/spell.modal.js}" layout:fragment="datatable3"></script>
+	<script  th:src="@{/resources/js/tables/classes.js}" layout:fragment="datatable">
+	</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout-mobile}">
+<head>
+<title>Расы</title>
+<link rel="stylesheet" th:href="@{/resources/css/card.columns.flex.css}" />
+<script th:src="@{/resources/js/fixCardColumn.js}"></script>
+<style>
+.invert {
+	filter: invert(100%);
+	-webkit-filter: invert(85%) sepia(80%);
+}
+</style>
+</head>
+<body>
+	<div role="main" class="container-fluid pt-4 " layout:fragment="content">
+		<div class="row justify-content-md-center pl-3 pr-3 full-content-dnd content-dnd">
+			<div th:each="race : ${races}" class="col-md-auto  pb-1 pt-1">
+				<div class="card-class">
+					<div class="row">
+						<div class="col-8 text-class pb-0" th:text="${race.capName}"></div>
+						<div class="col text-right">
+							<img data-toggle="popover" data-placement="top" th:if="${race.darkVision}" class="invert" th:src="@{/resources/icons/spectacles.svg}" height="25" title="темное зрение" /><img
+								data-toggle="popover" data-placement="top" th:if="${race.natureArmor}" class="invert" th:src="@{/resources/icons/turtle-shell.svg}" height="25" title="природный доспех"
+							/><img data-toggle="popover" data-placement="top" th:if="${race.athletics}" class="invert" th:src="@{/resources/icons/strong-man.svg}" height="25" title="атлетичный" /><img
+								data-toggle="popover" data-placement="top" th:if="${race.stealth}" class="invert" th:src="@{/resources/icons/spy.svg}" height="25" title="скрытный"
+							/><img data-toggle="popover" data-placement="top" th:if="${race.resistenceFire}" class="invert" th:src="@{/resources/icons/pyromaniac.svg}" height="25" title="сопротивление к урону огнем" /><img
+								data-toggle="popover" data-placement="top" th:if="${race.resistencePoison}" class="invert" th:src="@{/resources/icons/poison-bottle.svg}" height="25"
+								title="сопротивление или иммунитет к урону ядом"
+							/><img data-toggle="popover" data-placement="top" th:if="${race.resistenceCold}" class="invert" th:src="@{/resources/icons/walrus-head.svg}" height="25" title="сопротивление к урону холодом" /><img
+								height="25"
+							/>
+						</div>
+					</div>
+					<div class="pt-0 pb-2" th:text="${race.englishName}"></div>
+					<a th:href="@{|/races/race/${race.id}|}"> <img class="cover rounded-lg" th:src="@{'https://storage.googleapis.com/dnd5/races/'+ ${race.id} +'.jpg'}" align="middle" width="250px"
+						height="277px"
+					/></a>
+					<div class="row justify-content-between">
+						<div class="col-8 pt-1 text-color-400" th:text="${race.abilityBonuses}"></div>
+					</div>
+					<div class="text-color-opacity">Источник:</div>
+					<div class="text-color-opacity" th:text="${race.book.name}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

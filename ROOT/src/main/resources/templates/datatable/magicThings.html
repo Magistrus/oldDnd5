@@ -1,0 +1,364 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/datatable-mobile-layout}">
+<head>
+<head>
+<title>Магические предметы и артефакты</title>
+<style>
+img {
+	float: center;
+}
+.invert {
+	filter: invert(100%);
+	-webkit-filter: invert(100%) sepia(100%);
+}
+</style>
+</head>
+<body>
+	<div class="container-fluid" layout:fragment="content">
+		<table id="example" class="table table-hover table-sm color-main-bg-500">
+			<thead>
+				<tr>
+					<th>Предмет</th>
+					<th>Категория</th>
+					<th>Редкость</th>
+					<th>Настройка</th>
+					<th>Стоимость</th>
+					<th>Источник</th>
+					<th>English</th>
+				</tr>
+			</thead>
+		</table>
+		<div class="modal fade" id="mtWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+				<div class="modal-content color-main-bg-500">
+					<div class="modal-body"></div>
+					<div class="modal-header color-main-bg-600">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script layout:fragment="datatable">
+		$(document)
+				.ready(
+						function() {
+							$('a.toggle-vis').on(
+									'click',
+									function(e) {
+										e.preventDefault();
+										var column = table.column($(this).attr(
+												'data-column'));
+										column.visible(!column.visible());
+									});
+
+							var table = $('#example')
+									.DataTable(
+											{
+												iDisplayLength : 10,
+												dom : 'pBfrti',
+												processing : true,
+												serverSide : true,
+												ajax : '/data/magicThings',
+												scrollY : "65vh",
+												columns : [
+														{
+															data : "name",
+															width : "30%",
+															render : function(
+																	data, type,
+																	row) {
+																if (type === 'display') {
+																	return '<h6>'
+																			+ data
+																			+ (row.englishName ? '<small class="text-secondary"> ('
+																					+ row.englishName
+																					+ ')</small>'
+																					: '')
+																			+ (row.customization ? ' <span title = "Требуется настройка" class="badge badge-secondary">Н</span>'
+																					: '')
+																			+ '</h6> '
+																			+ '<div class="text-secondary"><small>'
+																			+ row.rarity
+																			+ '</small></div>';
+																}
+																return data;
+															},
+														},
+														{
+															data : "type",
+															width : "10%",
+															searchable : false,
+															className : "text-center",
+															render : function(
+																	data, type,
+																	row) {
+																if (type === 'display') {
+																	var typeText = '';
+																	switch (data) {
+																	case 'зелье':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.4_92.png" title="' + data +'" height="30">';
+																		break;
+																	case 'рукопашное оружие':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.6_98.png" title="' + data +'" height="30">';
+																		break;
+																	case 'доспех':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.6_94.png" title="' + data +'" height="30">';
+																		break;
+																	case 'волшебная палочка':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.3_03.png" title="' + data +'" height="30">';
+																		break;
+																	case 'жезл':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.7_93.png" title="' + data +'" height="30">';
+																		break;
+																	case 'посох':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.7_33.png" title="' + data +'" height="30">';
+																		break;
+																	case 'кольцо':
+																		typeText = '<img class="invert" src="/resources/icons/Icons8_71.png" title="' + data +'" height="30">';
+																		break;
+																	case 'свиток':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.5_85.png" title="' + data +'" height="30">';
+																		break;
+																	case 'чудесный предмет':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.2_45.png" title="' + data +'" height="30">';
+																		break;
+																	case 'дальнобойное оружие':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.4_60.png" title="' + data +'" height="30">';
+																		break;
+																	case 'щит':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.1_88.png" title="' + data +'" height="30">';
+																		break;
+																	case 'аммуниция':
+																		typeText = '<img class="invert" src="/resources/icons/Icon.4_73.png" title="' + data +'" height="30">';
+																		break;
+																	}
+																	return typeText;
+																}
+																return data;
+															},
+														},
+														{
+															data : "rarity",
+															width : "3%",
+															className : "text-center",
+														},
+														{
+															data : "customization",
+															width : "3%",
+															searchable : false,
+															className : "text-center",
+															render : function(
+																	data, type,
+																	row) {
+																if (type === 'display') {
+																	if (data) {
+																		return 'Есть';
+																	}
+																}
+																return 'Нет';
+															},
+														},
+														{
+															data : "cost",
+															width : "10%",
+															searchable : false,
+															className : "text-center",
+														},
+														{
+															data : "book",
+															width : "10%",
+															searchable : false,
+															className : "text-center",
+														},
+														{
+															data : "englishName",
+															width : "1%",
+															className : "text-center",
+														}, ],
+												columnDefs : [ {
+													targets : [ 1 ],
+													visible : false
+												}, {
+													targets : [ 2 ],
+													visible : false
+												}, {
+													targets : [ 3 ],
+													visible : false
+												}, {
+													"targets" : [ 4 ],
+													"visible" : false
+												}, {
+													targets : [ 5 ],
+													visible : false
+												}, {
+													targets : [ 6 ],
+													visible : false
+												}, ],
+												buttons : [
+														{
+															extend : 'searchPanes',
+															className : 'btn-main btn-sm btn-color-main',
+														},
+														{
+															extend : 'colvis',
+															text : 'Столбцы',
+															className : 'btn-main btn-sm btn-color-main',
+															buttons : [
+																	{
+																		text : 'Категория',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							1)
+																					.visible(
+																							!dt
+																									.column(
+																											1)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Редкость',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							2)
+																					.visible(
+																							!dt
+																									.column(
+																											2)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Настройка',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							3)
+																					.visible(
+																							!dt
+																									.column(
+																											3)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Стоимость',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							4)
+																					.visible(
+																							!dt
+																									.column(
+																											4)
+																									.visible());
+																		}
+																	},
+																	{
+																		text : 'Источник',
+																		action : function(
+																				e,
+																				dt,
+																				node,
+																				config) {
+																			dt
+																					.column(
+																							5)
+																					.visible(
+																							!dt
+																									.column(
+																											5)
+																									.visible());
+																		}
+																	}, ]
+														} ],
+												language : {
+													processing : "Загрузка...",
+													search : "Поиск",
+													lengthMenu : "Показывать _MENU_ записей на странице",
+													zeroRecords : "Ничего не найдено",
+													info : "Показано с _START_ до _END_ из _TOTAL_",
+													infoEmpty : "Нет доступных записей",
+													infoFiltered : "(filtered from _MAX_ всего)",
+													paginate : {
+														first : "В начало",
+														previous : "<",
+							next : ">",
+														last : "В конец"
+													},
+													searchPanes : {
+														clearMessage : "Сбросить",
+														title : {
+															_ : 'Отфильтровано - %d',
+															0 : 'Фильтры не активны (Ctrl или Shift для множественного выбора)',
+															1 : 'Один фильтр выбран',
+														},
+														collapse : 'Фильтры (%d)'
+													},
+												},
+												ordering : true,
+											});
+							$('#example tbody').on(
+									'click',
+									'tr',
+									function() {
+										var tr = $(this).closest('tr');
+										var row = table.row(tr);
+										$('#mtWindow').find(".modal-body")
+												.html(format(row.data()));
+										$('#mtWindow').modal('show');
+									});
+						});
+		function format(d) {
+			var name = '<h5 class="main-header">' + d.name;
+			if (d.englishName !== null) {
+				name += ' <small class="text-secondary">(' + d.englishName
+						+ ')' + '</small>';
+			}
+			name += '</h5>';
+			var info = name
+					+ '<hr class ="line1" align="center" size="5" color="#822000" /><p><em>'
+					+ d.type;
+			if (d.adType) {
+				info += ' (' + d.adType + ')';
+			}
+			info += ', ' + d.rarity;
+			if (d.customization) {
+				info += ' (требуется настройка';
+				if (d.custClasses) {
+					info += ' ' + d.custClasses;
+				}
+				if (d.custSpecial) {
+					info += ' ' + d.custSpecial;
+				}
+				info += ')';
+			}
+			info += '</em>';
+			info += d.description;
+			info += '<p class="text-center">Стоимость: ' + d.cost + '</p>';
+			info += '<a class="btn btn-outline-dark btn-sm" href="/stock/artifacts/' + d.id + '">Подробно</a>';
+			info += '<p class="text-right font-weight-light"><small class="text-muted">Источник: '
+					+ d.book + '</small></p>'
+			return info;
+		}
+	</script>
+</body>
+</html>
