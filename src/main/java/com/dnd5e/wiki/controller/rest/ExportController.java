@@ -78,7 +78,7 @@ public class ExportController {
 	@Autowired
 	private BackgroundRepository backgroundRepo;
 
-	@GetMapping(value = "/json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<JsonCreature> getJsonCreatures() {
 		List<JsonCreature> creatures = new ArrayList<>();
 		for (Creature creature : creatureRepo.findAll()) {
@@ -205,7 +205,7 @@ public class ExportController {
 		return creatures;
 	}
 	
-	@GetMapping(value = "/5etools", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/5etools", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ETools get5EtoolsCreatures() {
 		ETools etools = new ETools();
 		etools.setMonster(creatureRepo.findAll().stream()
@@ -214,7 +214,7 @@ public class ExportController {
 		return etools;
 	}
 
-	@GetMapping(value = "/shaped", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/shaped", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ShapedEntity getShaped() {
 		ShapedEntity entity = new ShapedEntity();
 		entity.setMonsters(creatureRepo.findAll().stream()

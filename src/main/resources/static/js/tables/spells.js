@@ -206,10 +206,7 @@ $(document).ready(function() {
 				searchable: false,
 			},
 			],
-			columnDefs : [{
-				"targets": [ 0 ],
-				"visible": false
-			},
+			columnDefs : [
 			{
 				searchPanes: {
 					preSelect: [preSelectClass === null ?  '' : preSelectClass]
@@ -218,51 +215,7 @@ $(document).ready(function() {
 				"visible": false
 			},
 			{
-				"targets": [ 4 ],
-				"visible": false
-			},
-			{
-				"targets": [ 5 ],
-				"visible": false
-			},
-			{
-				"targets": [ 6 ],
-				"visible": false
-			},
-			{
-				"targets": [ 7 ],
-				"visible": false
-			},
-			{
-				"targets": [ 8 ],
-				"visible": false
-			},
-			{
-				"targets": [ 9 ],
-				"visible": false
-			},
-			{
-				"targets": [ 10 ],
-				"visible": false
-			},
-			{
-				"targets": [ 11 ],
-				"visible": false
-			},
-			{
-				"targets": [ 12 ],
-				"visible": false
-			},
-			{
-				"targets": [ 13 ],
-				"visible": false
-			},
-			{
-				"targets": [ 14 ],
-				"visible": false
-			},
-			{
-				"targets": [ 15 ],
+				"targets": [ 0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
 				"visible": false
 			},
 			],

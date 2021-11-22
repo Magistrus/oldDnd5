@@ -24,7 +24,7 @@ public class RaceBuilderHandler {
 	@Transactional
 	public void addRace(HeroModel heroModel, RaceInfo raceInfo) {
 		raceInfo.clearBonuses();
-		Race race = raceRepo.getOne(raceInfo.getId());
+		Race race = raceRepo.getById(raceInfo.getId());
 		for (AbilityBonus bonus : race.getAbilityValueBonuses()) {
 			switch (bonus.getAbility()) {
 			case STRENGTH:
@@ -96,7 +96,7 @@ public class RaceBuilderHandler {
 		if (heroModel.getRaceInfo() == null) {
 			return null;
 		}
-		Race race = raceRepo.getOne(heroModel.getRaceInfo().getId());
+		Race race = raceRepo.getById(heroModel.getRaceInfo().getId());
 		return new RaceDto(race);
 	}
 }

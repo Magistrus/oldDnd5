@@ -55,7 +55,7 @@ public class EquipmentsRestController {
 			.collect(Collectors.toList());
 		if (!filterTypes.isEmpty()) {
 			specification = addSpecification(specification, (root, query, cb) -> {
-				Join<DamageType, Spell> types = root.join("types", JoinType.LEFT);
+				Join<DamageType, Equipment> types = root.join("types", JoinType.LEFT);
 				query.distinct(true);
 				return types.in(filterTypes);
 			});

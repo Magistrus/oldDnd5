@@ -106,7 +106,7 @@ public class CreatureController {
 
 	@GetMapping("/tag/{id}")
 	public String getCreatureRace(Model model, @PathVariable Integer id) {
-		CreatureRace race = creatureRaceRepo.getOne(id);
+		CreatureRace race = creatureRaceRepo.getById(id);
 		model.addAttribute("creatureRaces", creatureRaceRepo.findAll(Sort.by("name")));
 		model.addAttribute("race", race);
 		model.addAttribute("creatures", creatureRepo.findAllByRaceIdOrderByExpAsc(id));

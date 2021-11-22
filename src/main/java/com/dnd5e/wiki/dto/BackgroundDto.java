@@ -4,10 +4,8 @@ import java.util.stream.Collectors;
 
 import org.thymeleaf.util.StringUtils;
 
-import com.dnd5e.wiki.model.creature.Language;
 import com.dnd5e.wiki.model.creature.SkillType;
 import com.dnd5e.wiki.model.hero.Background;
-import com.dnd5e.wiki.model.stock.Equipment;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
