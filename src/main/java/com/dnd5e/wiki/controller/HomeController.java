@@ -64,8 +64,8 @@ public class HomeController {
 	@GetMapping("/.well-known/pki-validation/A704B7CF7FF9E7E346D9B50FD97D4328.txt")
 	@ResponseBody
 	public String getSetrifiacateValidation() {
-		return "c0ee5c1d37335c7a3678658c1ff161b216a160b12f99e2c145a2c560e84f2363\r\n" + 
-				"comodoca.com\r\n" + 
+		return "c0ee5c1d37335c7a3678658c1ff161b216a160b12f99e2c145a2c560e84f2363\n" + 
+				"comodoca.com\n" + 
 				"S77OLq8QpcIjOfpErg4l";
 	}
 }
