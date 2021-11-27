@@ -159,3 +159,12 @@ s}
     background: #FFF;
     color: #b5160a;
 }
+@media (max-width: 1200px) {
+	.new_site{
+    	position: relative;
+    	top: 8px;
+	}
+	.pt-5{
+		padding-top: 5rem !imprortant;
+	}
+}
