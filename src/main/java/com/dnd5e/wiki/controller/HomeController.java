@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dnd5e.wiki.model.places.Place;
 import com.dnd5e.wiki.repository.BookRepository;
@@ -59,5 +60,12 @@ public class HomeController {
 	@GetMapping("/403")
 	public String getAccessError() {
 		return "403";
+	}
+	@GetMapping("/.well-known/pki-validation/A704B7CF7FF9E7E346D9B50FD97D4328.txt")
+	@ResponseBody
+	public String getSetrifiacateValidation() {
+		return "c0ee5c1d37335c7a3678658c1ff161b216a160b12f99e2c145a2c560e84f2363\r\n" + 
+				"comodoca.com\r\n" + 
+				"S77OLq8QpcIjOfpErg4l";
 	}
 }
