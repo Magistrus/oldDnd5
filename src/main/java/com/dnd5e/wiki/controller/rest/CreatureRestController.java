@@ -199,7 +199,7 @@ public class CreatureRestController {
 		options.computeIfAbsent(key, s -> new ArrayList<>()).add(v);
 	}
 	
-	private Specification<Creature> bySources(Set<TypeBook> types) {
+	private <T> Specification<T> bySources(Set<TypeBook> types) {
 		return (root, query, cb) -> root.get("book").get("type").in(types);
 	}
 }
