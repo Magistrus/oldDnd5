@@ -38,5 +38,6 @@ jobs:
         script: |
           docker stop dnd5old && docker rm dnd5old
           docker pull magistrus/dnd5old:latest
-          docker run --network employee-mysql --name dnd5old -p 8080:8080 -d -e spring.profiles.active=prod -e dbhost=mysql-rel -e dbport=3306  -e dbuser=${{ secrets.DB_USER  }} -e dbpassword=${{ secrets.DB_PASSWORD }} -e dbname=dnd5 magistrus/dnd5old &
+          docker run --network employee-mysql --name dnd5old -p 8080:8080 -d -e spring.profiles.active=prod -e dbhost=mysql-rel -e dbport=3306  -e dbuser=${{ secrets.DB_USER  }} -e dbpassword=${{ secrets.DB_PASSWORD }} -e dbname=dnd5 magistrus/dnd5old
+          docker rmi $(docker images --filter "dangling=true" -q --no-trunc) &
       
